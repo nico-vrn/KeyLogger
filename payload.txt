@@ -1,3 +1,0 @@
-start https://www.google.com
-start notepad
-start calc
